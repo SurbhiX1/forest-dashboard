@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Forest Station — Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+<body>
+  <div id="app" class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Main navigation">
+  <div class="brand">
+    <!-- Updated TREE ICON -->
+    <svg class="leaf" viewBox="0 0 24 24" aria-hidden>
+      <path fill="currentColor" d="M12 2C10 2 8 4 8 6c0 .7.2 1.4.5 2C6 8 4 10 4 12s2 4 4.5 4H11v4H9v2h6v-2h-2v-4h2.5c2.5 0 4.5-2 4.5-4s-2-4-4.5-4c.3-.6.5-1.3.5-2 0-2-2-4-4-4z"/>
+    </svg>
+
+    <div>
+      <h1 class="logo">Forest NOC</h1>
+      <small>Station Console</small>
+    </div>
+  </div>
+
+  <nav class="nav" role="navigation">
+    <button class="nav-btn active" data-page="dashboard">🏠 Dashboard</button>
+    <button class="nav-btn" data-page="environment">🌿 Environment</button>
+    <button class="nav-btn" data-page="graphs">📈 Graphs</button>
+    <button class="nav-btn" data-page="nodes">🛰 Nodes</button>
+    <button class="nav-btn" data-page="alerts">🚨 Alerts</button>
+    <button class="nav-btn" data-page="logs">📜 Logs</button>
+  </nav>
+</aside>
+
+
+    
+    <!-- CLOCK (top-right) -->
+    <div id="clock"></div>
+
+
+    <!-- MAIN -->
+    <main class="main" role="main">
+      <header class="topbar">
+        <div>
+          <h2 id="zone-title">Zone A — Western Ridge</h2>
+          <div class="meta">
+            <span id="last-updated">Last updated — —</span>
+            <span id="node-count">Nodes: 0</span>
+            <span id="alerts-count">Alerts: 0</span>
+          </div>
+        </div>
+        <div class="actions">
+          <button id="refreshBtn" title="Refresh now">⟳ Refresh</button>
+        </div>
+      </header>
+      <section id="page-graphs" class="page" aria-hidden="true">
+  <h3 class="section-header"><span>📊 Graphs</span></h3>
+
+  <div class="graph-wrap">
+    <h4 class="graph-title">Temperature (Last 24 Hours)</h4>
+    <canvas id="graph-temp"></canvas>
+  </div>
+
+  <div class="graph-wrap">
+    <h4 class="graph-title">Humidity (Last 24 Hours)</h4>
+    <canvas id="graph-hum"></canvas>
+  </div>
+
+  <div class="graph-wrap">
+    <h4 class="graph-title">Gas Levels (MQ2/MQ135)</h4>
+    <canvas id="graph-gas"></canvas>
+  </div>
+
+  <div class="graph-wrap">
+    <h4 class="graph-title">Noise Levels (dB)</h4>
+    <canvas id="graph-noise"></canvas>
+  </div>
+</section>
+
+      <!-- PAGES -->
+      <section id="page-dashboard" class="page active" aria-labelledby="zone-title">
+        <div class="cards-row">
+          <!-- two rows 3+3; uniform card sizes -->
+          <div class="card glass">
+            <div class="card-title">Fire Risk (PFFI)</div>
+            <div class="gauge" id="gauge-pffi"></div>
+          </div>
+
+          <div class="card glass">
+            <div class="card-title">Temperature (°C)</div>
+            <div class="gauge" id="gauge-temp"></div>
+          </div>
+
+          <div class="card glass">
+            <div class="card-title">Humidity (%)</div>
+            <div class="gauge" id="gauge-hum"></div>
+          </div>
+
+          <div class="card glass">
+            <div class="card-title">Noise (dB)</div>
+            <div class="gauge" id="gauge-dB"></div>
+          </div>
+
+          <div class="card glass">
+            <div class="card-title">Air Quality (AQI)</div>
+            <div class="gauge" id="gauge-aqi"></div>
+          </div>
+
+          <div class="card glass">
+            <div class="card-title">Vapor Pressure Deficit (kPa)</div>
+            <div class="gauge" id="gauge-vpd"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-environment" class="page" aria-hidden="true">
+        
+        <h3 class="section-header"><span>🔥 Fire Weather</span></h3>
+        <div class="section-card-grid">
+          <div class="section-card">
+            <div class="card-title">Heat Index</div>
+            <div class="gauge" id="g-heat"></div>
+          </div>
+          <div class="section-card">
+            <div class="card-title">Dew Point</div>
+            <div class="gauge" id="g-dew"></div>
+          </div>
+          <div class="section-card">
+            <div class="card-title">Fuel Moisture Index</div>
+            <div class="gauge" id="g-fmi"></div>
+          </div>
+        </div>
+
+        <h3 class="section-header"><span>🌫 Air & Gas</span></h3>
+        <div class="section-card-grid">
+          <div class="section-card">
+            <div class="card-title">MQ2 — Smoke</div>
+            <div class="gauge" id="g-mq2"></div>
+          </div>
+          <div class="section-card">
+            <div class="card-title">MQ135 — Air Quality</div>
+            <div class="gauge" id="g-mq135"></div>
+          </div>
+          <div class="section-card">
+            <div class="card-title">AQI (composite)</div>
+            <div class="gauge" id="g-aqi2"></div>
+          </div>
+        </div>
+
+        <h3 class="section-header"><span>🔊 Acoustic Activity</span></h3>
+        <div class="section-card-grid">
+          <div class="section-card">
+            <div class="card-title">Noise Level (dB)</div>
+            <div class="gauge" id="g-noise-env"></div>
+          </div>
+          <div class="section-card">
+            <div class="card-title">Wildlife Events</div>
+            <div class="gauge" id="g-wildlife"></div>
+          </div>
+          <div class="section-card">
+            <div class="card-title">Threat Sounds</div>
+            <div class="gauge" id="g-threat"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-nodes" class="page" aria-hidden="true">
+        <h3>Nodes</h3>
+        <!-- Node Filters -->
+        <div class="node-filters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="online">Online</button>
+          <button class="filter-btn" data-filter="offline">Offline</button>
+          <button class="filter-btn" data-filter="lowbattery">Low Battery</button>
+          <button class="filter-btn" data-filter="firerisk">High Fire Risk</button>
+        </div>
+
+        <div class="table-wrap">
+          <table id="nodes-table" class="nodes-table">
+            <thead>
+              <tr>
+                <th>Node</th>
+                <th>Temp (°C)</th>
+                <th>Hum (%)</th>
+                <th>Smoke</th>
+                <th>CO / AQI</th>
+                <th>dB</th>
+                <th>Battery</th>
+                <th>Signal</th>
+                <th>Last seen</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="page-alerts" class="page" aria-hidden="true">
+        <h3>Active Alerts</h3>
+        <div id="alerts-list" class="alerts-list">No alerts</div>
+      </section>
+
+      <section id="page-logs" class="page" aria-hidden="true">
+        <h3>Event Logs</h3>
+        <div id="logs-list" class="logs-list">No logs</div>
+      </section>
+    </main>
+  </div>
+
+
+  <!-- node detail modal -->
+  <div id="modal" class="modal hidden"><div class="modal-card"><button id="modal-close">✕</button><div id="modal-content"></div></div></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script src="app.js"></script>
+</body>
+</html>
+

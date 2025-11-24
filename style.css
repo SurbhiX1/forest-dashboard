@@ -1,0 +1,164 @@
+/* style.css — updated responsive forest glass + transitions */
+:root{
+  --bg1:#e9f5ef;
+  --accent:#2f9e44;
+  --muted:#6b6b6b;
+  --glass: rgba(255,255,255,0.06);
+  --card-h: 220px;
+  --card-w: 320px;
+}
+
+/* base */
+*{box-sizing:border-box}
+html,body,#app{height:100%}
+body{
+  margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  background: linear-gradient(180deg,#eaf6ed 0%, #f4fbf5 100%);
+  color:#073012;
+}
+
+/* layout */
+.app{display:flex;min-height:100vh}
+.sidebar{
+  width:260px;padding:20px;margin:18px;border-radius:12px;position: sticky;top:0;height: 100vh; overflow-y: auto;background-color:(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));
+  backdrop-filter:blur(8px);box-shadow:0 10px 30px rgba(8,18,10,0.06);
+}
+.brand{display:flex;gap:12px;align-items:center}
+.brand .leaf{width:44px;height:44px;color:var(--accent)}
+.brand h1{font-size:1.05rem;margin:0;color:#06310f}
+.brand small{display:block;color:var(--muted);font-size:0.82rem}
+
+.nav{margin-top:18px;display:flex;flex-direction:column;gap:8px}
+.nav-btn{background:transparent;border:none;padding:10px 12px;border-radius:10px;text-align:left;cursor:pointer;font-weight:700;color:#0b2a16;display:flex;gap:10px;align-items:center;transition:all .22s}
+.nav-btn.active{background:linear-gradient(90deg, rgba(47,158,68,0.12), rgba(106,208,122,0.04))}
+
+/* main area */
+.main{flex:1;padding:22px;margin:18px;border-radius:12px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.topbar h2{margin:0}
+.meta{color:var(--muted);display:flex;gap:12px;font-size:0.9rem}
+.actions button{background:var(--glass);border:0;padding:8px 12px;border-radius:8px;cursor:pointer;backdrop-filter:blur(6px)}
+
+/* pages */
+.page{display:none;opacity:0;transform:translateY(6px);transition:opacity .35s ease, transform .35s ease}
+.page.active{display:block;opacity:1;transform:none}
+
+/* cards row (dashboard) */
+.cards-row{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
+.card{width:var(--card-w);height:var(--card-h);padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));box-shadow:0 6px 20px rgba(8,18,10,0.04);display:flex;flex-direction:column;justify-content:center;align-items:center;transition:transform .22s}
+.card:hover{transform:translateY(-6px)}
+
+/* uniform gauge container */
+.gauge{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+
+/* smaller card styles for environment grid */
+.section-header{margin-top:10px;color:#1a5b2f;font-weight:800}
+.section-card-grid{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}
+.section-card{width:320px;height:180px;padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(46,204,113,0.06), rgba(255,255,255,0.02));box-shadow:0 6px 18px rgba(8,18,10,0.04);display:flex;flex-direction:column;justify-content:center;align-items:center;transition:transform .22s}
+.section-card:hover{transform:translateY(-6px)}
+
+/* table */
+.table-wrap{margin-top:8px;overflow:auto}
+.nodes-table{width:100%;border-collapse:collapse}
+.nodes-table th, .nodes-table td{padding:10px;border-bottom:1px solid rgba(8,18,10,0.05);text-align:left}
+.nodes-table th{background:transparent;color:#0b4524}
+
+/* alerts and logs */
+.alerts-list, .logs-list{margin-top:8px;padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);min-height:80px;color:#0b2a16}
+
+/* modal */
+.modal{position:fixed;inset:0;display:grid;place-items:center;background:rgba(0,0,0,0.24);backdrop-filter:blur(4px)}
+.modal.hidden{display:none}
+.modal-card{width:720px;background:white;border-radius:12px;padding:18px;color:#06310f}
+
+/* responsive */
+@media (max-width: 1100px){
+  .sidebar{display:none}
+  .cards-row{justify-content:center}
+  :root{--card-w: 300px}
+}
+
+/* clock */
+#clock {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    font-size: 20px;
+    background: rgba(255,255,255,0.1);
+    padding: 8px 16px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    color: #0e660c;
+    font-weight: 500;
+    z-index: 999;
+}
+
+.leaf {
+  width: 34px;
+  height: 34px;
+  color: #2ecc71; /* beautiful natural green */
+  margin-right: 12px;
+}
+
+/* Node Filter Buttons */
+.node-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.filter-btn {
+  background: rgba(255,255,255,0.1);
+  border: 0;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.25s;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background: rgba(46, 204, 113, 0.25);
+  color: #083c16;
+}
+
+/* GRAPHS PAGE */
+.graph-wrap {
+  width: 100%;
+  display: block;
+  background: rgba(255,255,255,0.06);
+  padding: 20px;
+  border-radius: 14px;
+  margin-bottom: 30px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  backdrop-filter: blur(8px);
+}
+
+.graph-title {
+  margin-bottom: 12px;
+  font-weight: 700;
+  color: #06310f;
+  font-size: 1.1rem;
+}
+
+/* Make graphs responsive */
+.graph-wrap canvas {
+  width: 100% !important;
+  height: 260px !important;
+}
+
+/* Scrollable main area */
+.main {
+  overflow-y: auto;
+  height: calc(100vh - 40px);
+}
+.node-flame {
+    background: rgba(255, 0, 0, 0.25) !important;
+    animation: glow 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 6px rgba(255,0,0,0.3); }
+    to   { box-shadow: 0 0 14px rgba(255,0,0,0.6); }
+}
